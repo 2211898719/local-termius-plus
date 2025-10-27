@@ -82,20 +82,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Get version from tag
+      - name: Get version
         id: get_version
-        if: github.event_name == 'push'
         shell: bash
         run: |
-          VERSION=${GITHUB_REF#refs/tags/v}
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-      
-      - name: Get version from input
-        id: get_version
-        if: github.event_name == 'workflow_dispatch'
-        shell: bash
-        run: |
-          VERSION=${{ github.event.inputs.version }}
+          if [ "${{ github.event_name }}" == "push" ]; then
+            VERSION=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION=${{ github.event.inputs.version }}
+          fi
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
       
       - name: Download all artifacts
