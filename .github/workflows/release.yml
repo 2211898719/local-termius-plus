@@ -66,6 +66,19 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: pnpm exec electron-builder --win
       
+      - name: Fix Linux binary permissions
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          chmod +x node_modules/.pnpm/app-builder-bin*/node_modules/app-builder-bin/linux/x64/app-builder
+          chmod +x node_modules/.pnpm/app-builder-bin*/node_modules/app-builder-bin/linux/arm64/app-builder
+          chmod +x node_modules/.pnpm/*/node_modules/*/linux/*/*
+      
+      - name: Install Linux dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfuse2 libnss3 libatk-bridge2.0-0 libdrm2 libxkbcommon0 libgbm1 libasound2
+      
       - name: Build for Linux
         if: matrix.os == 'ubuntu-latest'
         run: pnpm exec electron-builder --linux
