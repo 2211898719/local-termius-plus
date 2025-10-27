@@ -122,7 +122,29 @@ jobs:
           echo "Build artifacts:"
           find dist -type f -name "*.zip" -o -name "*.dmg" -o -name "*.AppImage" -o -name "*.deb" -o -name "*.snap" -o -name "*.exe" || true
       
+      - name: Wait to avoid rate limiting
+        run: sleep 10
+      
       - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.get_version.outputs.VERSION }}
+          name: Release v${{ steps.get_version.outputs.VERSION }}
+          files: |
+            dist/**/*
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+      
+      - name: Retry Create Release on failure
+        if: failure()
+        run: sleep 60
+      
+      - name: Create Release (Retry)
+        if: failure()
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.get_version.outputs.VERSION }}
