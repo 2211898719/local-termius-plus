@@ -66,22 +66,21 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: pnpm exec electron-builder --win
       
-      - name: Fix Linux binary permissions
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          chmod +x node_modules/.pnpm/app-builder-bin*/node_modules/app-builder-bin/linux/x64/app-builder
-          chmod +x node_modules/.pnpm/app-builder-bin*/node_modules/app-builder-bin/linux/arm64/app-builder
-          chmod +x node_modules/.pnpm/*/node_modules/*/linux/*/*
-      
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y libfuse2 libnss3 libatk-bridge2.0-0 libdrm2 libxkbcommon0 libgbm1 libasound2t64 || sudo apt-get install -y libasound2
       
+      - name: Fix binary permissions before build
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          find node_modules/.pnpm -type f -name "app-builder" -exec chmod +x {} \;
+          find node_modules/.pnpm -type f -name "fpm" -exec chmod +x {} \; 2>/dev/null || true
+      
       - name: Build for Linux
         if: matrix.os == 'ubuntu-latest'
-        run: pnpm exec electron-builder --linux
+        run: pnpm exec electron-builder --linux AppImage
       
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
