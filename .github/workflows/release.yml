@@ -56,19 +56,19 @@ jobs:
         run: pnpm install --ignore-scripts
       
       - name: Build application (skip typecheck)
-        run: electron-vite build
+        run: pnpm exec electron-vite build
       
       - name: Build for macOS (arm64 + x64)
         if: matrix.os == 'macos-latest'
-        run: electron-builder --mac
+        run: pnpm exec electron-builder --mac
       
       - name: Build for Windows
         if: matrix.os == 'windows-latest'
-        run: electron-builder --win
+        run: pnpm exec electron-builder --win
       
       - name: Build for Linux
         if: matrix.os == 'ubuntu-latest'
-        run: electron-builder --linux
+        run: pnpm exec electron-builder --linux
       
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
