@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- 本地网络访问权限描述 -->
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>This SSH client application needs access to local network to connect to SSH servers in your local network.</string>
+    
+    <!-- Bonjour服务支持 -->
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_ssh._tcp</string>
+        <string>_sftp-ssh._tcp</string>
+        <string>_ssh-22._tcp</string>
+    </array>
+    
+    <!-- 网络安全传输设置 - 允许所有连接 -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        <key>NSAllowsLocalNetworking</key>
+        <true/>
+        <key>NSAllowsArbitraryLoadsInWebContent</key>
+        <true/>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>localhost</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+            </dict>
+        </dict>
+    </dict>
+    
+    <!-- 网络权限 -->
+    <key>com.apple.security.network.client</key>
+    <true/>
+    <key>com.apple.security.network.server</key>
+    <true/>
+    
+    <!-- 允许访问所有网络接口 -->
+    <key>NSNetworkVolumesUsageDescription</key>
+    <string>This application needs access to network volumes to connect to remote servers.</string>
+</dict>
+</plist>
