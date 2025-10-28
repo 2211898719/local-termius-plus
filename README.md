@@ -2,6 +2,62 @@
 
 一个基于 Electron + Vue 3 + TypeScript 的现代化服务器运维管理工具，使用 SSH2 协议进行服务器连接和管理。
 
+## 📥 下载安装
+
+### 最新版本下载
+
+**推荐从 GitHub Releases 下载预编译版本：**
+
+[![Latest Release](https://img.shields.io/github/v/release/your-username/local-termius-plus?style=for-the-badge)](https://github.com/2211898719/local-termius-plus/releases/latest)
+
+### 支持平台
+
+- 🍎 **macOS** (Intel + Apple Silicon)
+  - `.dmg` 安装包
+  - `.zip` 便携版本
+- 🪟 **Windows** 
+  - `.exe` 安装包
+- 🐧 **Linux**
+  - `.AppImage` 便携版本
+
+### 快速开始
+
+1. 访问 [Releases 页面](https://github.com/2211898719/local-termius-plus/releases)
+2. 下载对应平台的安装包
+3. 安装并运行应用
+4. 开始管理你的服务器！
+
+> 💡 **提示**: 建议下载最新稳定版本，获得最佳体验和最新功能。
+
+### macOS 安全限制解除
+
+如果遇到 "无法打开，因为无法验证开发者" 的提示，请按以下步骤操作：
+
+#### 方法一：系统偏好设置（推荐）
+1. 打开 **系统偏好设置** > **安全性与隐私**
+2. 在 **通用** 标签页中找到被阻止的应用
+3. 点击 **仍要打开** 按钮
+
+#### 方法二：命令行解除限制
+```bash
+# 解除单个应用的隔离属性
+sudo xattr -cr /Applications/local-termius-plus.app
+
+# 或者针对下载的 .dmg 文件
+sudo xattr -cr ~/Downloads/local-termius-plus-*.dmg
+```
+
+#### 方法三：临时允许
+```bash
+# 允许从任何来源安装应用（不推荐）
+sudo spctl --master-disable
+
+# 使用后建议重新启用安全设置
+sudo spctl --master-enable
+```
+
+> ⚠️ **安全提醒**: 方法三会降低系统安全性，建议使用前两种方法。
+
 ## 功能特性
 
 ### 🔧 服务器管理
@@ -30,28 +86,30 @@
 - **图表**: Canvas API
 - **样式**: CSS3 + 响应式设计
 
-## 安装和运行
+## 🛠️ 开发指南
 
 ### 环境要求
 - Node.js 16+
 - pnpm (推荐) 或 npm
 
-### 安装依赖
+### 从源码构建
+
+#### 安装依赖
 ```bash
 pnpm install
 ```
 
-### 开发模式
+#### 开发模式
 ```bash
 pnpm dev
 ```
 
-### 构建应用
+#### 构建应用
 ```bash
 pnpm build
 ```
 
-### 打包应用
+#### 打包应用
 ```bash
 # macOS
 pnpm build:mac
@@ -62,6 +120,18 @@ pnpm build:win
 # Linux
 pnpm build:linux
 ```
+
+#### 发布新版本
+```bash
+# 自动发布（推荐）
+npm run release
+
+# 手动发布
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin v1.0.0
+```
+
+> 💡 **开发者提示**: 使用 `npm run release` 脚本可以自动读取版本号、创建标签并触发 GitHub Actions 构建发布。
 
 ## 使用说明
 
