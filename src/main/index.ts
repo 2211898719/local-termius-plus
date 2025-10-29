@@ -4,12 +4,14 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import { ServerManager } from './services/ServerManager'
 import { ProxyService } from './services/ProxyService'
+import { UpdateService } from './services/UpdateService'
 import { DatabaseManager } from './database/DatabaseManager'
 import { ServerConfig, ServerGroup, ProxyConfig } from './types/server'
 
 // 全局服务器管理器实例
 let serverManager: ServerManager
 let proxyService: ProxyService
+let updateService: UpdateService
 
 function createWindow(): void {
   // Create the browser window.
@@ -27,6 +29,11 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+    
+    // 设置更新服务的主窗口引用
+    if (updateService) {
+      updateService.setMainWindow(mainWindow)
+    }
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -88,6 +95,9 @@ async function initializeApp(): Promise<void> {
     
     // 初始化代理服务
     proxyService = new ProxyService()
+    
+    // 初始化更新服务
+    updateService = new UpdateService()
     
     // 设置IPC处理器
     setupIpcHandlers()
@@ -237,6 +247,39 @@ function setupIpcHandlers(): void {
     return await proxyService.testProxy(proxy)
   })
 
+  // 更新相关IPC
+  ipcMain.handle('check-for-updates', async () => {
+    return await updateService.checkForUpdates()
+  })
+
+  ipcMain.handle('check-for-updates-with-dialog', async () => {
+    return await updateService.checkForUpdatesWithDialog()
+  })
+
+  ipcMain.handle('download-update', async () => {
+    return await updateService.downloadUpdate()
+  })
+
+  ipcMain.handle('install-update', async () => {
+    return await updateService.installUpdate()
+  })
+
+  ipcMain.handle('get-current-version', () => {
+    return updateService.getCurrentVersion()
+  })
+
+  ipcMain.handle('get-update-info', () => {
+    return updateService.getUpdateInfo()
+  })
+
+  ipcMain.handle('is-checking-for-update', () => {
+    return updateService.isCheckingForUpdate()
+  })
+
+  ipcMain.handle('is-downloading-update', () => {
+    return updateService.isDownloadingUpdate()
+  })
+
   // 监听服务器状态变化事件
   serverManager.on('serverStatusChanged', (server) => {
     const mainWindow = BrowserWindow.getAllWindows()[0]
@@ -284,6 +327,49 @@ function setupIpcHandlers(): void {
     const mainWindow = BrowserWindow.getAllWindows()[0]
     if (mainWindow) {
       mainWindow.webContents.send(`ssh-status-${connectionId}`, status)
+    }
+  })
+
+  // 更新事件转发
+  updateService.on('checking-for-update', () => {
+    const mainWindow = BrowserWindow.getAllWindows()[0]
+    if (mainWindow) {
+      mainWindow.webContents.send('update-checking')
+    }
+  })
+
+  updateService.on('update-available', (updateInfo) => {
+    const mainWindow = BrowserWindow.getAllWindows()[0]
+    if (mainWindow) {
+      mainWindow.webContents.send('update-available', updateInfo)
+    }
+  })
+
+  updateService.on('update-not-available', (info) => {
+    const mainWindow = BrowserWindow.getAllWindows()[0]
+    if (mainWindow) {
+      mainWindow.webContents.send('update-not-available', info)
+    }
+  })
+
+  updateService.on('download-progress', (progress) => {
+    const mainWindow = BrowserWindow.getAllWindows()[0]
+    if (mainWindow) {
+      mainWindow.webContents.send('update-download-progress', progress)
+    }
+  })
+
+  updateService.on('update-downloaded', (info) => {
+    const mainWindow = BrowserWindow.getAllWindows()[0]
+    if (mainWindow) {
+      mainWindow.webContents.send('update-downloaded', info)
+    }
+  })
+
+  updateService.on('error', (error) => {
+    const mainWindow = BrowserWindow.getAllWindows()[0]
+    if (mainWindow) {
+      mainWindow.webContents.send('update-error', error)
     }
   })
 }

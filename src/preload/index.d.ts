@@ -44,10 +44,43 @@ interface ProxyManagerAPI {
   testProxy: (proxy: ProxyConfig) => Promise<boolean>
 }
 
+interface UpdateInfo {
+  version: string
+  releaseNotes?: string
+  releaseDate?: string
+  downloadUrl?: string
+}
+
+interface UpdateProgress {
+  percent: number
+  transferred: number
+  total: number
+  bytesPerSecond: number
+}
+
+interface UpdateManagerAPI {
+  checkForUpdates: () => Promise<void>
+  checkForUpdatesWithDialog: () => Promise<void>
+  downloadUpdate: () => Promise<void>
+  installUpdate: () => Promise<void>
+  getCurrentVersion: () => Promise<string>
+  getUpdateInfo: () => Promise<UpdateInfo | null>
+  isCheckingForUpdate: () => Promise<boolean>
+  isDownloadingUpdate: () => Promise<boolean>
+  onUpdateChecking: (callback: () => void) => void
+  onUpdateAvailable: (callback: (updateInfo: UpdateInfo) => void) => void
+  onUpdateNotAvailable: (callback: (info: any) => void) => void
+  onUpdateDownloadProgress: (callback: (progress: UpdateProgress) => void) => void
+  onUpdateDownloaded: (callback: (info: any) => void) => void
+  onUpdateError: (callback: (error: any) => void) => void
+  removeUpdateListeners: () => void
+}
+
 interface CustomAPI {
   serverManager: ServerManagerAPI
   sshManager: SSHManagerAPI
   proxyManager: ProxyManagerAPI
+  updateManager: UpdateManagerAPI
   onServerStatusChanged: (callback: (server: ServerConfig) => void) => void
   onMetricsUpdated: (callback: (serverId: string, metrics: ServerMetrics) => void) => void
   onServerAdded: (callback: (server: ServerConfig) => void) => void

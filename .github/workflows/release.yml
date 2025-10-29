@@ -60,11 +60,11 @@ jobs:
       
       - name: Build for macOS (arm64 + x64)
         if: matrix.os == 'macos-latest'
-        run: pnpm exec electron-builder --mac
+        run: pnpm exec electron-builder --mac --publish=never
       
       - name: Build for Windows
         if: matrix.os == 'windows-latest'
-        run: pnpm exec electron-builder --win
+        run: pnpm exec electron-builder --win --publish=never
       
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-latest'
@@ -80,7 +80,7 @@ jobs:
       
       - name: Build for Linux
         if: matrix.os == 'ubuntu-latest'
-        run: pnpm exec electron-builder --linux AppImage
+        run: pnpm exec electron-builder --linux AppImage --publish=never
       
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

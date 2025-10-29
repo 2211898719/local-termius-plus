@@ -58,6 +58,48 @@ const api = {
     testProxy: (proxy: any) => ipcRenderer.invoke('test-proxy', proxy)
   },
 
+  // 更新管理API
+  updateManager: {
+    checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
+    checkForUpdatesWithDialog: () => ipcRenderer.invoke('check-for-updates-with-dialog'),
+    downloadUpdate: () => ipcRenderer.invoke('download-update'),
+    installUpdate: () => ipcRenderer.invoke('install-update'),
+    getCurrentVersion: () => ipcRenderer.invoke('get-current-version'),
+    getUpdateInfo: () => ipcRenderer.invoke('get-update-info'),
+    isCheckingForUpdate: () => ipcRenderer.invoke('is-checking-for-update'),
+    isDownloadingUpdate: () => ipcRenderer.invoke('is-downloading-update'),
+    
+    // 更新事件监听
+    onUpdateChecking: (callback: () => void) => {
+      ipcRenderer.on('update-checking', callback)
+    },
+    onUpdateAvailable: (callback: (updateInfo: any) => void) => {
+      ipcRenderer.on('update-available', (_, updateInfo) => callback(updateInfo))
+    },
+    onUpdateNotAvailable: (callback: (info: any) => void) => {
+      ipcRenderer.on('update-not-available', (_, info) => callback(info))
+    },
+    onUpdateDownloadProgress: (callback: (progress: any) => void) => {
+      ipcRenderer.on('update-download-progress', (_, progress) => callback(progress))
+    },
+    onUpdateDownloaded: (callback: (info: any) => void) => {
+      ipcRenderer.on('update-downloaded', (_, info) => callback(info))
+    },
+    onUpdateError: (callback: (error: any) => void) => {
+      ipcRenderer.on('update-error', (_, error) => callback(error))
+    },
+    
+    // 移除更新事件监听
+    removeUpdateListeners: () => {
+      ipcRenderer.removeAllListeners('update-checking')
+      ipcRenderer.removeAllListeners('update-available')
+      ipcRenderer.removeAllListeners('update-not-available')
+      ipcRenderer.removeAllListeners('update-download-progress')
+      ipcRenderer.removeAllListeners('update-downloaded')
+      ipcRenderer.removeAllListeners('update-error')
+    }
+  },
+
   // 事件监听
   onServerStatusChanged: (callback: (server: any) => void) => {
     ipcRenderer.on('server-status-changed', (_, server) => callback(server))
