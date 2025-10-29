@@ -7,6 +7,15 @@ export interface UpdateInfo {
   releaseNotes?: string
   releaseDate?: string
   downloadUrl?: string
+  files?: Array<{
+    url: string
+    sha512: string
+    size: number
+  }>
+  path?: string
+  sha512?: string
+  isDelta?: boolean
+  deltaSize?: number
 }
 
 export interface UpdateProgress {
@@ -43,6 +52,10 @@ export class UpdateService extends EventEmitter {
       process.env.ELECTRON_DISABLE_ATTACHMENT_VALIDATION = 'true'
     }
 
+    // 启用增量更新
+    autoUpdater.allowDowngrade = false
+    autoUpdater.allowPrerelease = false
+
     // 监听更新事件
     autoUpdater.on('checking-for-update', () => {
       console.log('Checking for updates...')
@@ -55,7 +68,13 @@ export class UpdateService extends EventEmitter {
       this.updateAvailable = {
         version: info.version,
         releaseNotes: Array.isArray(info.releaseNotes) ? info.releaseNotes.join('\n') : info.releaseNotes || undefined,
-        releaseDate: info.releaseDate
+        releaseDate: info.releaseDate,
+        downloadUrl: info.downloadUrl,
+        files: info.files,
+        path: info.path,
+        sha512: info.sha512,
+        isDelta: info.isDelta,
+        deltaSize: info.deltaSize
       }
       this.isChecking = false
       this.emit('update-available', this.updateAvailable)

@@ -134,6 +134,7 @@ jobs:
             -o -name "latest-mac.yml" \
             -o -name "latest.yml" \
             -o -name "latest-linux.yml" \
+            -o -name "*.blockmap" \
           \) -exec cp {} dist-filtered/ \;
           echo "Filtered artifacts:"
           ls -lh dist-filtered/

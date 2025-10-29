@@ -11,6 +11,13 @@ files:
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
 asarUnpack:
   - resources/**
+# 增量更新配置
+compression: maximum
+asar: true
+asarUnpack:
+  - resources/**
+# 生成增量更新文件
+generateUpdatesFilesForAllChannels: true
 win:
   executableName: local-termius-plus
 nsis:

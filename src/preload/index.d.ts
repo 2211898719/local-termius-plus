@@ -49,6 +49,15 @@ interface UpdateInfo {
   releaseNotes?: string
   releaseDate?: string
   downloadUrl?: string
+  files?: Array<{
+    url: string
+    sha512: string
+    size: number
+  }>
+  path?: string
+  sha512?: string
+  isDelta?: boolean
+  deltaSize?: number
 }
 
 interface UpdateProgress {

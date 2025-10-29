@@ -50,11 +50,23 @@
         >
           <template #header>
             新版本 {{ updateInfo.version }} 可用
+            <n-tag v-if="updateInfo.isDelta" type="info" size="small" style="margin-left: 8px;">
+              增量更新
+            </n-tag>
           </template>
           <div v-if="updateInfo.releaseNotes">
             <n-text depth="3">更新内容：</n-text>
             <div class="release-notes">
               {{ updateInfo.releaseNotes }}
+            </div>
+          </div>
+          <div v-if="updateInfo.isDelta && updateInfo.deltaSize" class="update-size">
+            <n-text depth="3">增量更新大小：{{ formatBytes(updateInfo.deltaSize) }}</n-text>
+          </div>
+          <div v-if="updateInfo.files && updateInfo.files.length > 0" class="update-files">
+            <n-text depth="3">更新文件：</n-text>
+            <div v-for="file in updateInfo.files" :key="file.url" class="file-info">
+              <n-text depth="3">{{ file.url }} ({{ formatBytes(file.size) }})</n-text>
             </div>
           </div>
         </n-alert>
