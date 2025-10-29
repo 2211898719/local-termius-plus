@@ -2,7 +2,7 @@
   <div class="asset-manager">
     <div class="asset-header">
       <div class="header-top">
-        <h2>资产管理v1.0.2</h2>
+        <h2>资产管理v1.0.3</h2>
         <n-popover  trigger="hover" placement="bottom-end">
           <template #trigger>
             <button class="theme-toggle-btn" @click="$emit('toggleTheme')">
