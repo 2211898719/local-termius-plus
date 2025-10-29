@@ -33,9 +33,7 @@ mac:
   electronLanguages:
     - en
     - zh-CN
-  electronVersion: 38.3.0
   bundleVersion: "1.0.0"
-  buildVersion: "1.0.0"
   icon: build/icon.icns
   category: public.app-category.utilities
 linux:
