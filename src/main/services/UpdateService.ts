@@ -32,11 +32,15 @@ export class UpdateService extends EventEmitter {
     autoUpdater.autoDownload = false // 禁用自动下载
     autoUpdater.autoInstallOnAppQuit = true // 退出时自动安装
 
-    // 禁用代码签名验证（用于未签名的应用）
+    // 完全禁用代码签名验证（用于未签名的应用）
     if (process.platform === 'darwin') {
       autoUpdater.requestHeaders = {
         'User-Agent': 'local-termius-plus'
       }
+      
+      // 禁用所有代码签名检查
+      process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
+      process.env.ELECTRON_DISABLE_ATTACHMENT_VALIDATION = 'true'
     }
 
     // 监听更新事件
@@ -158,11 +162,18 @@ export class UpdateService extends EventEmitter {
     })
 
     if (response.response === 0) {
-      // 在 macOS 上禁用代码签名验证
-      if (process.platform === 'darwin') {
-        autoUpdater.quitAndInstall(false, true) // 第二个参数禁用代码签名验证
-      } else {
-        autoUpdater.quitAndInstall()
+      try {
+        // 在 macOS 上使用更安全的方式安装更新
+        if (process.platform === 'darwin') {
+          // 设置环境变量禁用代码签名检查
+          process.env.ELECTRON_DISABLE_CODE_SIGNING = 'true'
+          autoUpdater.quitAndInstall(false, true) // 禁用代码签名验证
+        } else {
+          autoUpdater.quitAndInstall()
+        }
+      } catch (error) {
+        console.error('Failed to install update:', error)
+        this.emit('error', error)
       }
     }
   }

@@ -36,6 +36,8 @@ mac:
   bundleVersion: "1.0.0"
   icon: build/icon.icns
   category: public.app-category.utilities
+  forceCodeSigning: false
+  signIgnore: []
 linux:
   target:
     - AppImage

@@ -8,6 +8,13 @@ import { UpdateService } from './services/UpdateService'
 import { DatabaseManager } from './database/DatabaseManager'
 import { ServerConfig, ServerGroup, ProxyConfig } from './types/server'
 
+// 禁用代码签名检查（用于未签名的应用）
+if (process.platform === 'darwin') {
+  process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
+  process.env.ELECTRON_DISABLE_ATTACHMENT_VALIDATION = 'true'
+  process.env.ELECTRON_DISABLE_CODE_SIGNING = 'true'
+}
+
 // 全局服务器管理器实例
 let serverManager: ServerManager
 let proxyService: ProxyService
