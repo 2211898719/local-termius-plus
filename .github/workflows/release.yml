@@ -127,8 +127,7 @@ jobs:
           mkdir -p dist-filtered
           # Keep only specific installer files, exclude all internal files
           find dist -type f \( \
-            -name "local-termius-plus-*.dmg" \
-            -o -name "local-termius-plus-*-arm64-mac.zip" \
+            -name "local-termius-plus-*-arm64-mac.zip" \
             -o -name "local-termius-plus-*-mac.zip" \
             -o -name "local-termius-plus-*-setup.exe" \
             -o -name "local-termius-plus-*.AppImage" \

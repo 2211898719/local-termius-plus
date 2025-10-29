@@ -13,8 +13,7 @@
 ### 支持平台
 
 - 🍎 **macOS** (Intel + Apple Silicon)
-  - `.dmg` 安装包
-  - `.zip` 便携版本
+  - `.zip` 便携版本（推荐）
 - 🪟 **Windows** 
   - `.exe` 安装包
 - 🐧 **Linux**
@@ -43,8 +42,8 @@
 # 解除单个应用的隔离属性
 sudo xattr -cr /Applications/local-termius-plus.app
 
-# 或者针对下载的 .dmg 文件
-sudo xattr -cr ~/Downloads/local-termius-plus-*.dmg
+# 或者针对下载的 .zip 文件
+sudo xattr -cr ~/Downloads/local-termius-plus-*.zip
 ```
 
 #### 方法三：临时允许

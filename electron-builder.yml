@@ -27,12 +27,15 @@ mac:
   notarize: false
   identity: null
   target:
-    - target: dmg
-      arch: [arm64, x64]
     - target: zip
       arch: [arm64, x64]
 dmg:
   artifactName: ${name}-${version}.${ext}
+  compressionLevel: 1
+  format: UDZO
+  window:
+    width: 540
+    height: 380
 linux:
   target:
     - AppImage
