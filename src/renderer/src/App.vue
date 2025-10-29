@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { NSplit, NMessageProvider, NConfigProvider, darkTheme, useOsTheme } from 'naive-ui'
 import Sidebar from './components/Sidebar.vue'
 import DockViewLayout from './components/DockViewLayout.vue'
+import UpdateManager from './components/UpdateManager.vue'
 import { ServerConfig, ServerMetrics } from '../../main/types/server'
 
 // 主题管理
@@ -132,11 +133,26 @@ const handleTerminalError = (error: string) => {
   console.error('Terminal error:', error)
 }
 
+// 更新检查
+const checkForUpdatesOnStartup = async () => {
+  try {
+    // 延迟3秒后检查更新，避免影响启动速度
+    setTimeout(async () => {
+      await window.api.updateManager.checkForUpdates()
+    }, 3000)
+  } catch (error) {
+    console.error('Failed to check for updates on startup:', error)
+  }
+}
+
 // 生命周期
 onMounted(() => {
   // 设置事件监听
   window.api.onServerStatusChanged(handleServerStatusChanged)
   window.api.onMetricsUpdated(handleMetricsUpdated)
+  
+  // 启动时检查更新
+  checkForUpdatesOnStartup()
 })
 
 onUnmounted(() => {

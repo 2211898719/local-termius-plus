@@ -54,6 +54,18 @@
         </n-icon>
         代理
       </button>
+      <button
+        class="tab-btn"
+        :class="{ active: activeTab === 'settings' }"
+        @click="activeTab = 'settings'"
+      >
+        <n-icon>
+          <Icon>
+            <SettingsRound />
+          </Icon>
+        </n-icon>
+        设置
+      </button>
     </div>
 
     <div class="asset-content custom-scrollbar">
@@ -355,6 +367,17 @@
           </div>
         </div>
       </div>
+
+      <!-- 设置管理 -->
+      <div v-if="activeTab === 'settings'" class="settings-section">
+        <div class="section-header">
+          <h3>应用设置</h3>
+        </div>
+        
+        <div class="settings-content">
+          <UpdateManager />
+        </div>
+      </div>
     </div>
 
     <!-- 服务器编辑对话框 -->
@@ -637,6 +660,7 @@ import Moon from '@vicons/material/ModeNightOutlined'
 import SettingsRound from '@vicons/material/SettingsRound'
 import BareMetalServer from '@vicons/carbon/BareMetalServer'
 import ServerProxy from '@vicons/carbon/ServerProxy'
+import UpdateManager from './UpdateManager.vue'
 
 // Props定义
 const props = defineProps<{
