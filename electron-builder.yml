@@ -26,9 +26,18 @@ mac:
   gatekeeperAssess: false
   notarize: false
   identity: null
+  type: development
   target:
     - target: zip
       arch: [arm64, x64]
+  electronLanguages:
+    - en
+    - zh-CN
+  electronVersion: 38.3.0
+  bundleVersion: "1.0.0"
+  buildVersion: "1.0.0"
+  icon: build/icon.icns
+  category: public.app-category.utilities
 linux:
   target:
     - AppImage

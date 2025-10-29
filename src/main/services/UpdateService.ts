@@ -32,6 +32,13 @@ export class UpdateService extends EventEmitter {
     autoUpdater.autoDownload = false // 禁用自动下载
     autoUpdater.autoInstallOnAppQuit = true // 退出时自动安装
 
+    // 禁用代码签名验证（用于未签名的应用）
+    if (process.platform === 'darwin') {
+      autoUpdater.requestHeaders = {
+        'User-Agent': 'local-termius-plus'
+      }
+    }
+
     // 监听更新事件
     autoUpdater.on('checking-for-update', () => {
       console.log('Checking for updates...')
@@ -151,7 +158,12 @@ export class UpdateService extends EventEmitter {
     })
 
     if (response.response === 0) {
-      autoUpdater.quitAndInstall()
+      // 在 macOS 上禁用代码签名验证
+      if (process.platform === 'darwin') {
+        autoUpdater.quitAndInstall(false, true) // 第二个参数禁用代码签名验证
+      } else {
+        autoUpdater.quitAndInstall()
+      }
     }
   }
 
