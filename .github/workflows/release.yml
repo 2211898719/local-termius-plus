@@ -125,12 +125,15 @@ jobs:
       - name: Filter artifacts (keep only required files)
         run: |
           mkdir -p dist-filtered
-          # Keep only specific installer files, exclude all internal files
+          # Keep only specific installer files and update configs, exclude all internal files
           find dist -type f \( \
             -name "local-termius-plus-*-arm64-mac.zip" \
             -o -name "local-termius-plus-*-mac.zip" \
             -o -name "local-termius-plus-*-setup.exe" \
             -o -name "local-termius-plus-*.AppImage" \
+            -o -name "latest-mac.yml" \
+            -o -name "latest.yml" \
+            -o -name "latest-linux.yml" \
           \) -exec cp {} dist-filtered/ \;
           echo "Filtered artifacts:"
           ls -lh dist-filtered/
