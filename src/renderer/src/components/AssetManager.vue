@@ -715,7 +715,7 @@ import ExpandLessFilled from '@vicons/material/ExpandLessFilled'
 const message = useMessage()
 
 // 响应式数据
-const activeTab = ref<'servers' | 'proxies'>('servers')
+const activeTab = ref<'servers' | 'proxies' | 'settings'>('servers')
 const searchQuery = ref('')
 const serverGroups = ref<ServerGroup[]>([])
 const proxies = ref<ProxyConfig[]>([])

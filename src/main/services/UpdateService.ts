@@ -97,6 +97,13 @@ export class UpdateService extends EventEmitter {
     }
 
     try {
+      // 在开发模式下跳过检查
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Skipping update check in development mode')
+        this.emit('update-not-available', { version: 'dev' })
+        return
+      }
+
       await autoUpdater.checkForUpdates()
     } catch (error) {
       console.error('Failed to check for updates:', error)

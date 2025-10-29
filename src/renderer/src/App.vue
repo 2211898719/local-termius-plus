@@ -3,7 +3,6 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { NSplit, NMessageProvider, NConfigProvider, darkTheme, useOsTheme } from 'naive-ui'
 import Sidebar from './components/Sidebar.vue'
 import DockViewLayout from './components/DockViewLayout.vue'
-import UpdateManager from './components/UpdateManager.vue'
 import { ServerConfig, ServerMetrics } from '../../main/types/server'
 
 // 主题管理
