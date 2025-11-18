@@ -3,26 +3,26 @@
     <n-card title="应用更新" class="update-card">
       <template #header-extra>
         <n-space>
-          <n-button 
-            type="primary" 
-            :loading="isChecking" 
+          <n-button
+            type="primary"
+            :loading="isChecking"
             @click="checkForUpdates"
             :disabled="isDownloading"
           >
             {{ isChecking ? '检查中...' : '检查更新' }}
           </n-button>
-          <n-button 
-            v-if="updateInfo" 
-            type="success" 
+          <n-button
+            v-if="updateInfo"
+            type="success"
             :loading="isDownloading"
             @click="downloadUpdate"
             :disabled="isChecking"
           >
             {{ isDownloading ? '下载中...' : '下载更新' }}
           </n-button>
-          <n-button 
-            v-if="updateDownloaded" 
-            type="warning" 
+          <n-button
+            v-if="updateDownloaded"
+            type="warning"
             @click="installUpdate"
           >
             安装更新
@@ -42,9 +42,9 @@
         </n-descriptions>
 
         <!-- 更新信息 -->
-        <n-alert 
-          v-if="updateInfo" 
-          type="success" 
+        <n-alert
+          v-if="updateInfo"
+          type="success"
           title="发现新版本"
           :show-icon="true"
         >
@@ -73,8 +73,8 @@
 
         <!-- 下载进度 -->
         <n-card v-if="isDownloading" title="下载进度" size="small">
-          <n-progress 
-            type="line" 
+          <n-progress
+            type="line"
             :percentage="downloadProgress.percent"
             :show-indicator="true"
           />
@@ -87,9 +87,9 @@
         </n-card>
 
         <!-- 更新完成 -->
-        <n-alert 
-          v-if="updateDownloaded" 
-          type="warning" 
+        <n-alert
+          v-if="updateDownloaded"
+          type="warning"
           title="更新下载完成"
           :show-icon="true"
         >
@@ -97,9 +97,9 @@
         </n-alert>
 
         <!-- 错误信息 -->
-        <n-alert 
-          v-if="updateError" 
-          type="error" 
+        <n-alert
+          v-if="updateError"
+          type="error"
           title="更新失败"
           :show-icon="true"
         >
@@ -125,7 +125,20 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { NCard, NSpace, NButton, NDescriptions, NDescriptionsItem, NTag, NAlert, NProgress, NText, NDivider, NSwitch, useMessage } from 'naive-ui'
+import {
+  NCard,
+  NSpace,
+  NButton,
+  NDescriptions,
+  NDescriptionsItem,
+  NTag,
+  NAlert,
+  NProgress,
+  NText,
+  NDivider,
+  NSwitch,
+  useMessage
+} from 'naive-ui'
 
 const message = useMessage()
 
@@ -251,26 +264,26 @@ const removeEventListeners = () => {
 onMounted(async () => {
   // 获取当前版本
   currentVersion.value = await window.api.updateManager.getCurrentVersion()
-  
+
   // 设置事件监听
   setupEventListeners()
-  
+
   // 检查是否有可用的更新信息
   const info = await window.api.updateManager.getUpdateInfo()
   if (info) {
     updateInfo.value = info
   }
-  
+
   // 检查是否正在检查或下载
   isChecking.value = await window.api.updateManager.isCheckingForUpdate()
   isDownloading.value = await window.api.updateManager.isDownloadingUpdate()
-  
+
   // 加载自动检查设置
   const saved = localStorage.getItem('autoCheckEnabled')
   if (saved !== null) {
     autoCheckEnabled.value = saved === 'true'
   }
-  
+
   // 如果启用了自动检查，则检查更新
   if (autoCheckEnabled.value && !updateInfo.value) {
     setTimeout(() => {

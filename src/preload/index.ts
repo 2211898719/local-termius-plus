@@ -114,6 +114,12 @@ const api = {
     ipcRenderer.on('server-removed', (_, serverId) => callback(serverId))
   },
 
+  // 窗口管理API
+  windowManager: {
+    toggleAlwaysOnTop: () => ipcRenderer.invoke('toggle-always-on-top'),
+    isAlwaysOnTop: () => ipcRenderer.invoke('is-always-on-top')
+  },
+
   // 移除事件监听
   removeAllListeners: (channel: string) => {
     ipcRenderer.removeAllListeners(channel)

@@ -39,17 +39,17 @@ const filteredGroups = computed(() => {
   if (!props.searchQuery) {
     return props.groups
   }
-  
+
   const query = props.searchQuery.toLowerCase()
   return props.groups.map(group => ({
     ...group,
-    servers: group.servers.filter(server => 
+    servers: group.servers.filter(server =>
       server.name.toLowerCase().includes(query) ||
       server.host.includes(query)
     ),
     children: group.children.map(childGroup => ({
       ...childGroup,
-      servers: childGroup.servers.filter(server => 
+      servers: childGroup.servers.filter(server =>
         server.name.toLowerCase().includes(query) ||
         server.host.includes(query)
       )
@@ -60,7 +60,7 @@ const filteredGroups = computed(() => {
 // 获取所有分组（用于下拉选择）
 const allGroups = computed(() => {
   const groups: Array<{ id: string; name: string }> = []
-  
+
   const collectGroups = (groupList: ServerGroup[]) => {
     groupList.forEach(group => {
       groups.push({ id: group.id, name: group.name })
@@ -69,7 +69,7 @@ const allGroups = computed(() => {
       }
     })
   }
-  
+
   collectGroups(props.groups)
   return groups
 })
@@ -343,7 +343,7 @@ const handleSaveGroup = (groupData: Partial<ServerGroup>) => {
       :groups="allGroups"
       @save="handleSaveServer"
     />
-    
+
     <GroupEditDialog
       v-model:visible="groupDialogVisible"
       :group="editingGroup"

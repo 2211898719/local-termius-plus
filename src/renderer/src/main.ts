@@ -6,7 +6,9 @@ import naive from 'naive-ui'
 import ServerDashboard from './components/ServerDashboard.vue'
 import Terminal from './components/Terminal.vue'
 
-const app = createApp(App)
+// 设置页面现在作为模态框在App.vue中使用，不再需要路由判断
+const appComponent = App
+const app = createApp(appComponent)
 
 // 注册全局组件供 dockview 使用
 app.component('dashboard', ServerDashboard)

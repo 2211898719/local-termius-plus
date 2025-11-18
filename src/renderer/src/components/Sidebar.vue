@@ -1,6 +1,6 @@
 <template>
   <n-card class="sidebar-card" :bordered="false" embedded>
-    <AssetManager 
+    <AssetManager
       :theme-mode="themeMode"
       :is-dark-theme="isDarkTheme"
       @select-server="$emit('selectServer', $event)"
@@ -38,6 +38,7 @@ const emit = defineEmits<{
   height: 100vh;
   display: flex;
   flex-direction: column;
+  border-radius: 0;
 }
 
 .sidebar-card :deep(.n-card__content) {

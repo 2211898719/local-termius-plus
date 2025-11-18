@@ -63,7 +63,17 @@ const clickedTab = ref<any>(null) // 当前右键点击的tab
 
 // 计算当前主题
 const currentTheme = computed(() => {
-  return props.isDarkTheme ? themeAbyssSpaced : themeLightSpaced
+  // 自定义主题，禁用分割线拖拽
+  const customTheme = props.isDarkTheme ? { ...themeAbyssSpaced } : { ...themeLightSpaced }
+  
+  // 设置分割线为透明，禁用拖拽
+  customTheme.sash = {
+    size: 0,
+    hoverSize: 0,
+    disable: true
+  }
+  
+  return customTheme
 })
 
 // 右键菜单选项

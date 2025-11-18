@@ -2,46 +2,40 @@
   <div class="asset-manager">
     <div class="asset-header">
       <div class="header-top">
-        <h2>资产管理v1.1.1</h2>
-        <n-popover  trigger="hover" placement="bottom-end">
-          <template #trigger>
-            <button class="theme-toggle-btn" @click="$emit('toggleTheme')">
-              <n-icon>
-                <Icon>
-                  <component :is="getThemeIcon()" />
-                </Icon>
-              </n-icon>
-            </button>
-          </template>
-          <div class="theme-tooltip">
-            {{ getThemeTooltip() }}
-          </div>
-        </n-popover>
+        <h2>资产管理</h2>
+<!--        <n-popover trigger="hover" placement="bottom-end">-->
+<!--          <template #trigger>-->
+<!--            <button class="theme-toggle-btn" @click="$emit('toggleTheme')">-->
+<!--              <n-icon>-->
+<!--                <Icon>-->
+<!--                  <component :is="getThemeIcon()" />-->
+<!--                </Icon>-->
+<!--              </n-icon>-->
+<!--            </button>-->
+<!--          </template>-->
+<!--          <div class="theme-tooltip">-->
+<!--            {{ getThemeTooltip() }}-->
+<!--          </div>-->
+<!--        </n-popover>-->
       </div>
       <div class="asset-actions">
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="搜索资源..."
-          class="search-input"
-        />
+        <input v-model="searchQuery" type="text" placeholder="搜索资源..." class="search-input" />
       </div>
     </div>
 
-
     <div class="asset-tabs">
-        <button
-          class="tab-btn"
-          :class="{ active: activeTab === 'servers' }"
-          @click="activeTab = 'servers'"
-        >
-          <n-icon>
-            <Icon>
-              <BareMetalServer />
-            </Icon>
-          </n-icon>
-          服务器
-        </button>
+      <button
+        class="tab-btn"
+        :class="{ active: activeTab === 'servers' }"
+        @click="activeTab = 'servers'"
+      >
+        <n-icon>
+          <Icon>
+            <BareMetalServer />
+          </Icon>
+        </n-icon>
+        服务器
+      </button>
       <button
         class="tab-btn"
         :class="{ active: activeTab === 'proxies' }"
@@ -53,18 +47,6 @@
           </Icon>
         </n-icon>
         代理
-      </button>
-      <button
-        class="tab-btn"
-        :class="{ active: activeTab === 'settings' }"
-        @click="activeTab = 'settings'"
-      >
-        <n-icon>
-          <Icon>
-            <SettingsRound />
-          </Icon>
-        </n-icon>
-        设置
       </button>
     </div>
 
@@ -80,7 +62,6 @@
                   <AddFilled />
                 </Icon>
               </n-icon>
-              添加服务器
             </button>
             <button @click="handleAddRootGroup" class="add-btn">
               <n-icon>
@@ -88,7 +69,6 @@
                   <FolderFilled />
                 </Icon>
               </n-icon>
-              添加分组
             </button>
           </div>
         </div>
@@ -107,17 +87,15 @@
         </div>
 
         <!-- 保留原有的服务器组结构作为备用 -->
-        <div class="server-groups" style="display: none;">
-          <div
-            v-for="group in filteredServerGroups"
-            :key="group.id"
-            class="group-item"
-          >
+        <div class="server-groups" style="display: none">
+          <div v-for="group in filteredServerGroups" :key="group.id" class="group-item">
             <div class="group-header" @click="toggleGroup(group.id)">
               <span class="group-icon" :class="{ expanded: expandedGroups.has(group.id) }">
                 <n-icon>
                   <Icon>
-                    <component :is="expandedGroups.has(group.id) ? ExpandLessFilled : ExpandMoreFilled" />
+                    <component
+                      :is="expandedGroups.has(group.id) ? ExpandLessFilled : ExpandMoreFilled"
+                    />
                   </Icon>
                 </n-icon>
               </span>
@@ -190,20 +168,20 @@
             </div>
 
             <!-- 子分组 -->
-            <div
-              v-if="expandedGroups.has(group.id)"
-              class="subgroups"
-            >
-              <div
-                v-for="subgroup in group.children"
-                :key="subgroup.id"
-                class="subgroup-item"
-              >
+            <div v-if="expandedGroups.has(group.id)" class="subgroups">
+              <div v-for="subgroup in group.children" :key="subgroup.id" class="subgroup-item">
                 <div class="subgroup-header" @click="toggleGroup(subgroup.id)">
-                  <span class="subgroup-icon" :class="{ expanded: expandedGroups.has(subgroup.id) }">
+                  <span
+                    class="subgroup-icon"
+                    :class="{ expanded: expandedGroups.has(subgroup.id) }"
+                  >
                     <n-icon>
                       <Icon>
-                        <component :is="expandedGroups.has(subgroup.id) ? ExpandLessFilled : ExpandMoreFilled" />
+                        <component
+                          :is="
+                            expandedGroups.has(subgroup.id) ? ExpandLessFilled : ExpandMoreFilled
+                          "
+                        />
                       </Icon>
                     </n-icon>
                   </span>
@@ -216,14 +194,22 @@
                         </Icon>
                       </n-icon>
                     </button>
-                    <button class="action-btn" @click="handleAddServer(subgroup.id)" title="添加服务器">
+                    <button
+                      class="action-btn"
+                      @click="handleAddServer(subgroup.id)"
+                      title="添加服务器"
+                    >
                       <n-icon>
                         <Icon>
                           <AddFilled />
                         </Icon>
                       </n-icon>
                     </button>
-                    <button class="action-btn" @click="handleDeleteGroup(subgroup)" title="删除分组">
+                    <button
+                      class="action-btn"
+                      @click="handleDeleteGroup(subgroup)"
+                      title="删除分组"
+                    >
                       <n-icon>
                         <Icon>
                           <DeleteFilled />
@@ -256,14 +242,22 @@
                       <span class="status-text">{{ getStatusText(server.status) }}</span>
                     </div>
                     <div class="server-actions" @click.stop>
-                      <button class="action-btn" @click="handleEditServer(server)" title="编辑服务器">
+                      <button
+                        class="action-btn"
+                        @click="handleEditServer(server)"
+                        title="编辑服务器"
+                      >
                         <n-icon>
                           <Icon>
                             <EditFilled />
                           </Icon>
                         </n-icon>
                       </button>
-                      <button class="action-btn" @click="handleDeleteServer(server)" title="删除服务器">
+                      <button
+                        class="action-btn"
+                        @click="handleDeleteServer(server)"
+                        title="删除服务器"
+                      >
                         <n-icon>
                           <Icon>
                             <DeleteFilled />
@@ -298,7 +292,6 @@
             v-for="proxy in filteredProxies"
             :key="proxy.id"
             class="proxy-item"
-            :class="{ disabled: !proxy.enabled }"
           >
             <div class="proxy-info">
               <div class="proxy-name">
@@ -320,50 +313,27 @@
                 {{ proxy.description }}
               </div>
             </div>
-
-            <div class="proxy-status">
-              <span class="status-indicator" :class="{ enabled: proxy.enabled }">
-                {{ proxy.enabled ? '启用' : '禁用' }}
-              </span>
-            </div>
-
             <div class="proxy-actions">
-              <button @click="testProxy(proxy)" class="test-btn" title="测试连接">
-                <n-icon>
-                  <Icon>
-                    <ScienceFilled />
-                  </Icon>
-                </n-icon>
-              </button>
               <button @click="editProxy(proxy)" class="edit-btn" title="编辑">
                 <n-icon>
                   <Icon>
                     <EditFilled />
                   </Icon>
-                </n-icon>
-              </button>
-              <button @click="toggleProxy(proxy)" class="toggle-btn" :title="proxy.enabled ? '禁用' : '启用'">
-                <n-icon>
-                  <Icon>
-                    <component :is="proxy.enabled ? PauseFilled : PlayArrowFilled" />
-                  </Icon>
-                </n-icon>
+                  </n-icon>
               </button>
               <button @click="deleteProxy(proxy)" class="delete-btn" title="删除">
                 <n-icon>
                   <Icon>
                     <DeleteFilled />
                   </Icon>
-                </n-icon>
+                  </n-icon>
               </button>
             </div>
           </div>
 
           <div v-if="filteredProxies.length === 0" class="empty-state">
             <p>暂无代理配置</p>
-            <button @click="showAddProxyDialog = true" class="add-first-btn">
-              添加第一个代理
-            </button>
+            <button @click="showAddProxyDialog = true" class="add-first-btn">添加第一个代理</button>
           </div>
         </div>
       </div>
@@ -373,7 +343,7 @@
         <div class="section-header">
           <h3>应用设置</h3>
         </div>
-        
+
         <div class="settings-content">
           <UpdateManager />
         </div>
@@ -413,7 +383,12 @@
         </n-form-item>
 
         <n-form-item label="端口" path="port">
-          <n-input-number v-model:value="serverForm.port" :min="1" :max="65535" style="width: 100%" />
+          <n-input-number
+            v-model:value="serverForm.port"
+            :min="1"
+            :max="65535"
+            style="width: 100%"
+          />
         </n-form-item>
 
         <n-form-item label="用户名" path="username">
@@ -564,7 +539,12 @@
         </n-form-item>
 
         <n-form-item label="端口" path="port">
-          <n-input-number v-model:value="proxyForm.port" :min="1" :max="65535" style="width: 100%" />
+          <n-input-number
+            v-model:value="proxyForm.port"
+            :min="1"
+            :max="65535"
+            style="width: 100%"
+          />
         </n-form-item>
 
         <n-form-item v-if="proxyForm.type === 'http'" label="用户名" path="username">
@@ -603,18 +583,21 @@
       @negative-click="showDeleteConfirmDialog = false"
       style="width: 500px"
     >
-      <div v-if="deleteConfirmData" style="padding: 20px 0;">
+      <div v-if="deleteConfirmData" style="padding: 20px 0">
         <n-alert
           :type="deleteConfirmData.isSecondConfirm ? 'error' : 'warning'"
           :title="deleteConfirmData.isSecondConfirm ? '⚠️ 最终确认' : '⚠️ 删除确认'"
-          style="margin-bottom: 16px;"
+          style="margin-bottom: 16px"
         >
           <div v-html="deleteConfirmData.message"></div>
         </n-alert>
 
-        <div v-if="deleteConfirmData.type === 'group' && !deleteConfirmData.isSecondConfirm" style="color: #666; font-size: 14px;">
+        <div
+          v-if="deleteConfirmData.type === 'group' && !deleteConfirmData.isSecondConfirm"
+          style="color: #666; font-size: 14px"
+        >
           <p>此分组包含以下内容：</p>
-          <ul style="margin: 8px 0; padding-left: 20px;">
+          <ul style="margin: 8px 0; padding-left: 20px">
             <li v-if="deleteConfirmData.item.servers?.length > 0">
               {{ deleteConfirmData.item.servers.length }} 个服务器
             </li>
@@ -622,9 +605,7 @@
               {{ deleteConfirmData.item.children.length }} 个子分组
             </li>
           </ul>
-          <p style="color: #ff4d4f; font-weight: bold;">
-            删除后将无法恢复，请谨慎操作！
-          </p>
+          <p style="color: #ff4d4f; font-weight: bold">删除后将无法恢复，请谨慎操作！</p>
         </div>
       </div>
     </n-modal>
@@ -632,22 +613,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, h } from 'vue'
+import { computed, h, onMounted, ref } from 'vue'
 import {
-  NTree,
-  NInput,
-  NIcon,
-  NModal,
+  FormInst,
+  NAlert,
   NForm,
   NFormItem,
-  NSelect,
+  NIcon,
+  NInput,
   NInputNumber,
-  NAlert,
+  NModal,
   NPopover,
-  FormInst,
+  NSelect,
+  NTree,
   useMessage
 } from 'naive-ui'
-import { ServerConfig, ServerGroup, ProxyConfig } from '../../../main/types/server'
+import { ProxyConfig, ServerConfig, ServerGroup } from '../../../main/types/server'
 import { Icon } from '@vicons/utils'
 import LinkFilled from '@vicons/material/LinkFilled'
 import EditFilled from '@vicons/material/EditFilled'
@@ -657,10 +638,12 @@ import ComputerFilled from '@vicons/material/ComputerFilled'
 import FolderFilled from '@vicons/material/FolderFilled'
 import Sunny from '@vicons/material/WbSunnyOutlined'
 import Moon from '@vicons/material/ModeNightOutlined'
-import SettingsRound from '@vicons/material/SettingsRound'
 import BareMetalServer from '@vicons/carbon/BareMetalServer'
 import ServerProxy from '@vicons/carbon/ServerProxy'
 import UpdateManager from './UpdateManager.vue'
+import SecurityFilled from '@vicons/material/SecurityFilled'
+import ExpandMoreFilled from '@vicons/material/ExpandMoreFilled'
+import ExpandLessFilled from '@vicons/material/ExpandLessFilled'
 
 // Props定义
 const props = defineProps<{
@@ -685,9 +668,9 @@ const getThemeIcon = () => {
     case 'dark':
       return Moon
     case 'system':
-      return SettingsRound
+      return Sunny // 使用Sunny代替SettingsRound
     default:
-      return SettingsRound
+      return Sunny
   }
 }
 
@@ -704,18 +687,12 @@ const getThemeTooltip = () => {
       return '点击切换主题'
   }
 }
-import ScienceFilled from '@vicons/material/ScienceFilled'
-import PlayArrowFilled from '@vicons/material/PlayArrowFilled'
-import PauseFilled from '@vicons/material/PauseFilled'
-import SecurityFilled from '@vicons/material/SecurityFilled'
-import ExpandMoreFilled from '@vicons/material/ExpandMoreFilled'
-import ExpandLessFilled from '@vicons/material/ExpandLessFilled'
 
 // 消息API
 const message = useMessage()
 
 // 响应式数据
-const activeTab = ref<'servers' | 'proxies' | 'settings'>('servers')
+const activeTab = ref<'servers' | 'proxies'>('servers')
 const searchQuery = ref('')
 const serverGroups = ref<ServerGroup[]>([])
 const proxies = ref<ProxyConfig[]>([])
@@ -790,7 +767,8 @@ const validators = {
     if (!value) return true // 空值由required规则处理
 
     // IPv4 正则表达式
-    const ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+    const ipv4Regex =
+      /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
 
     // IPv6 正则表达式（简化版）
     const ipv6Regex = /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^::1$|^::$/
@@ -809,7 +787,8 @@ const validators = {
     if (!value) return true // 空值由required规则处理
 
     // 使用用户提供的正则表达式：支持IPv4和域名
-    const hostRegex = /^(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}|(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})$/
+    const hostRegex =
+      /^(?:(?:[0-9]{1,3}\.){3}[0-9]{1,3}|(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,})$/
 
     if (!hostRegex.test(value)) {
       return new Error('请输入有效的IP地址或域名')
@@ -891,12 +870,8 @@ const serverFormRules = {
     { required: true, type: 'number' as const, message: '请输入端口号', trigger: 'blur' },
     { validator: validators.port, trigger: 'blur' }
   ],
-  username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' }
-  ],
-  groupId: [
-    { required: true, message: '请选择分组', trigger: 'change' }
-  ]
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  groupId: [{ required: true, message: '请选择分组', trigger: 'change' }]
 }
 
 // 分组表单验证规则
@@ -913,9 +888,7 @@ const proxyFormRules = {
     { required: true, message: '请输入代理名称', trigger: 'blur' },
     { validator: validators.serverName, trigger: 'blur' }
   ],
-  type: [
-    { required: true, message: '请选择代理类型', trigger: 'change' }
-  ],
+  type: [{ required: true, message: '请选择代理类型', trigger: 'change' }],
   host: [
     { required: true, message: '请输入代理主机地址', trigger: 'blur' },
     { validator: validators.hostAddress, trigger: 'blur' }
@@ -942,7 +915,11 @@ const showOperationStatus = (type: 'success' | 'error' | 'info', messageText: st
 }
 
 // 显示删除确认对话框
-const showDeleteConfirm = (type: 'server' | 'group' | 'proxy', item: any, isSecondConfirm = false) => {
+const showDeleteConfirm = (
+  type: 'server' | 'group' | 'proxy',
+  item: any,
+  isSecondConfirm = false
+) => {
   let title = ''
   let message = ''
 
@@ -1043,81 +1020,110 @@ const treeData = computed(() => {
     const children: any[] = []
 
     // 添加服务器节点
-    group.servers.forEach(server => {
+    group.servers.forEach((server) => {
       children.push({
         key: `server-${server.id}`,
         label: server.name,
         type: 'server',
         data: server,
         prefix: () => h(Icon, {}, { default: () => h(ComputerFilled) }),
-        suffix: () => h('div', {
-          style: {
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }
-        }, [
-          // 代理信息显示
-          (() => {
-            const proxy = findProxyForServer(server)
-            if (proxy) {
-              return h('span', {
-                style: {
-                  color: '#f59e0b',
-                  fontSize: '10px',
-                  backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                  padding: '2px 6px',
-                  borderRadius: '3px',
-                  border: '1px solid rgba(245, 158, 11, 0.3)'
+        suffix: () =>
+          h(
+            'div',
+            {
+              style: {
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }
+            },
+            [
+              // 代理信息显示
+              // (() => {
+              //   const proxy = findProxyForServer(server)
+              //   if (proxy) {
+              //     return h(
+              //       'span',
+              //       {
+              //         style: {
+              //           color: '#f59e0b',
+              //           fontSize: '10px',
+              //           backgroundColor: 'rgba(245, 158, 11, 0.1)',
+              //           padding: '2px 6px',
+              //           borderRadius: '3px',
+              //           border: '1px solid rgba(245, 158, 11, 0.3)'
+              //         },
+              //         title: `使用代理: ${proxy.name} (${proxy.type.toUpperCase()})`
+              //       },
+              //       h(Icon, {}, { default: () => h(LinkFilled) })
+              //     )
+              //   }
+              //   return null
+              // })(),
+              // h(
+              //   'span',
+              //   {
+              //     style: {
+              //       color: getStatusColor(server.status),
+              //       fontSize: '12px'
+              //     }
+              //   },
+              //   getStatusText(server.status)
+              // ),
+              h(
+                'div',
+                {
+                  style: {
+                    display: 'flex',
+                    gap: '4px'
+                  }
                 },
-                title: `使用代理: ${proxy.name} (${proxy.type.toUpperCase()})`
-              }, h(Icon, {}, { default: () => h(LinkFilled) }))
-            }
-            return null
-          })(),
-          h('span', {
-            style: {
-              color: getStatusColor(server.status),
-              fontSize: '12px'
-            }
-          }, getStatusText(server.status)),
-          h('div', {
-            style: {
-              display: 'flex',
-              gap: '4px'
-            }
-          }, [
-            h('button', {
-              class: 'tree-action-btn connect-btn',
-              onClick: (e: Event) => {
-                e.stopPropagation()
-                handleServerDoubleClick(server)
-              },
-              title: '连接服务器'
-            }, h(Icon, {}, { default: () => h(LinkFilled) })),
-            h('button', {
-              class: 'tree-action-btn edit-btn',
-              onClick: (e: Event) => {
-                e.stopPropagation()
-                handleEditServer(server)
-              },
-              title: '编辑服务器'
-            }, h(Icon, {}, { default: () => h(EditFilled) })),
-            h('button', {
-              class: 'tree-action-btn delete-btn',
-              onClick: (e: Event) => {
-                e.stopPropagation()
-                handleDeleteServer(server)
-              },
-              title: '删除服务器'
-            }, h(Icon, {}, { default: () => h(DeleteFilled) }))
-          ])
-        ])
+                [
+                  h(
+                    'button',
+                    {
+                      class: 'tree-action-btn connect-btn',
+                      onClick: (e: Event) => {
+                        e.stopPropagation()
+                        handleServerDoubleClick(server)
+                      },
+                      title: '连接服务器'
+                    },
+                    h(Icon, {}, { default: () => h(LinkFilled) })
+                  ),
+                  h(
+                    'button',
+                    {
+                      class: 'tree-action-btn edit-btn',
+                      onClick: (e: Event) => {
+                        e.stopPropagation()
+                        handleEditServer(server)
+                      },
+                      title: '编辑服务器'
+                    },
+                    h(Icon, {}, { default: () => h(EditFilled) })
+                  ),
+                  h(
+                    'button',
+                    {
+                      class: 'tree-action-btn delete-btn',
+                      onClick: (e: Event) => {
+                        e.stopPropagation()
+                        handleDeleteServer(server)
+                      },
+                      title: '删除服务器'
+                    },
+                    h(Icon, {}, { default: () => h(DeleteFilled) })
+                  )
+                ]
+              )
+            ]
+          )
       })
     })
 
     // 添加子分组节点
-    group.children.forEach(subgroup => {
+    group.children.forEach((subgroup) => {
       children.push(convertGroupToTreeNode(subgroup))
     })
 
@@ -1127,73 +1133,102 @@ const treeData = computed(() => {
       type: 'group',
       data: group,
       prefix: () => h(Icon, {}, { default: () => h(FolderFilled) }),
-      suffix: () => h('div', {
-        style: {
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px'
-        }
-      }, [
-        // 代理信息显示
-        (() => {
-          if (group.proxyId) {
-            const proxy = proxyConfigs.value.find(p => p.id === group.proxyId)
-            if (proxy) {
-              return h('span', {
-                style: {
-                  color: '#f59e0b',
-                  fontSize: '10px',
-                  backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                  padding: '2px 6px',
-                  borderRadius: '3px',
-                  border: '1px solid rgba(245, 158, 11, 0.3)'
-                },
-                title: `组代理: ${proxy.name} (${proxy.type.toUpperCase()})`
-              }, h(Icon, {}, { default: () => h(LinkFilled) }))
+      suffix: () =>
+        h(
+          'div',
+          {
+            style: {
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px'
             }
-          }
-          return null
-        })(),
-        h('div', {
-          style: {
-            display: 'flex',
-            gap: '4px'
-          }
-        }, [
-        h('button', {
-          class: 'tree-action-btn edit-btn',
-          onClick: (e: Event) => {
-            e.stopPropagation()
-            handleEditGroup(group)
           },
-          title: '编辑分组'
-        }, h(Icon, {}, { default: () => h(EditFilled) })),
-        h('button', {
-          class: 'tree-action-btn add-btn',
-          onClick: (e: Event) => {
-            e.stopPropagation()
-            handleAddServer(group.id)
-          },
-          title: '添加服务器'
-        }, h(Icon, {}, { default: () => h(AddFilled) })),
-        h('button', {
-          class: 'tree-action-btn add-subgroup-btn',
-          onClick: (e: Event) => {
-            e.stopPropagation()
-            handleAddSubGroup(group.id)
-          },
-          title: '添加子组'
-        }, h(Icon, {}, { default: () => h(FolderFilled) })),
-        h('button', {
-          class: 'tree-action-btn delete-btn',
-          onClick: (e: Event) => {
-            e.stopPropagation()
-            handleDeleteGroup(group)
-          },
-          title: '删除分组'
-        }, h(Icon, {}, { default: () => h(DeleteFilled) }))
-        ])
-      ]),
+          [
+            // 代理信息显示
+            // (() => {
+            //   if (group.proxyId) {
+            //     const proxy = proxyConfigs.value.find((p) => p.id === group.proxyId)
+            //     if (proxy) {
+            //       return h(
+            //         'span',
+            //         {
+            //           style: {
+            //             color: '#f59e0b',
+            //             fontSize: '10px',
+            //             backgroundColor: 'rgba(245, 158, 11, 0.1)',
+            //             padding: '2px 6px',
+            //             borderRadius: '3px',
+            //             border: '1px solid rgba(245, 158, 11, 0.3)'
+            //           },
+            //           title: `组代理: ${proxy.name} (${proxy.type.toUpperCase()})`
+            //         },
+            //         h(Icon, {}, { default: () => h(LinkFilled) })
+            //       )
+            //     }
+            //   }
+            //   return null
+            // })(),
+            h(
+              'div',
+              {
+                style: {
+                  display: 'flex',
+                  gap: '4px'
+                }
+              },
+              [
+                h(
+                  'button',
+                  {
+                    class: 'tree-action-btn edit-btn',
+                    onClick: (e: Event) => {
+                      e.stopPropagation()
+                      handleEditGroup(group)
+                    },
+                    title: '编辑分组'
+                  },
+                  h(Icon, {}, { default: () => h(EditFilled) })
+                ),
+                h(
+                  'button',
+                  {
+                    class: 'tree-action-btn add-btn',
+                    onClick: (e: Event) => {
+                      e.stopPropagation()
+                      handleAddServer(group.id)
+                    },
+                    title: '添加服务器'
+                  },
+                  h(Icon, {}, { default: () => h(AddFilled) })
+                ),
+                h(
+                  'button',
+                  {
+                    class: 'tree-action-btn add-subgroup-btn',
+                    onClick: (e: Event) => {
+                      e.stopPropagation()
+                      handleAddSubGroup(group.id)
+                    },
+                    title: '添加子组'
+                  },
+                  h(Icon, {}, { default: () => h(FolderFilled) })
+                ),
+                h(
+                  'button',
+                  {
+                    class: 'tree-action-btn delete-btn',
+                    onClick: (e: Event) => {
+                      e.stopPropagation()
+                      handleDeleteGroup(group)
+                    },
+                    title: '删除分组'
+                  },
+                  h(Icon, {}, { default: () => h(DeleteFilled) })
+                )
+              ]
+            )
+          ]
+        ),
       children: children.length > 0 ? children : undefined
     }
   }
@@ -1205,7 +1240,7 @@ const treeData = computed(() => {
 // 分组选项
 const groupOptions = computed(() => {
   const convertGroupsToOptions = (groups: ServerGroup[], level = 0): any[] => {
-    return groups.flatMap(group => [
+    return groups.flatMap((group) => [
       {
         label: '  '.repeat(level) + group.name,
         value: group.id
@@ -1219,7 +1254,7 @@ const groupOptions = computed(() => {
 // 父分组选项（排除当前编辑的分组）
 const parentGroupOptions = computed(() => {
   const convertGroupsToOptions = (groups: ServerGroup[], level = 0, excludeId?: string): any[] => {
-    return groups.flatMap(group => {
+    return groups.flatMap((group) => {
       if (group.id === excludeId) return []
       return [
         {
@@ -1241,7 +1276,7 @@ const proxyTypeOptions = [
 
 // 代理选项
 const proxyOptions = computed(() => {
-  return proxyConfigs.value.map(proxy => ({
+  return proxyConfigs.value.map((proxy) => ({
     label: `${proxy.name} (${proxy.type.toUpperCase()})`,
     value: proxy.id
   }))
@@ -1251,7 +1286,7 @@ const proxyOptions = computed(() => {
 const findProxyForServer = (server: ServerConfig): ProxyConfig | null => {
   // 1. 首先检查服务器自身是否有代理配置
   if (server.proxyId) {
-    const proxy = proxyConfigs.value.find(p => p.id === server.proxyId)
+    const proxy = proxyConfigs.value.find((p) => p.id === server.proxyId)
     if (proxy) return proxy
   }
 
@@ -1261,7 +1296,7 @@ const findProxyForServer = (server: ServerConfig): ProxyConfig | null => {
       if (group.id === targetGroupId) {
         // 检查当前组是否有代理配置
         if (group.proxyId) {
-          const proxy = proxyConfigs.value.find(p => p.id === group.proxyId)
+          const proxy = proxyConfigs.value.find((p) => p.id === group.proxyId)
           if (proxy) return proxy
         }
 
@@ -1289,20 +1324,22 @@ const filteredServerGroups = computed(() => {
   }
 
   const query = searchQuery.value.toLowerCase()
-  return serverGroups.value.map(group => ({
-    ...group,
-    servers: group.servers.filter(server =>
-      server.name.toLowerCase().includes(query) ||
-      server.host.includes(query)
-    ),
-    children: group.children.map(childGroup => ({
-      ...childGroup,
-      servers: childGroup.servers.filter(server =>
-        server.name.toLowerCase().includes(query) ||
-        server.host.includes(query)
-      )
-    })).filter(childGroup => childGroup.servers.length > 0)
-  })).filter(group => group.servers.length > 0 || group.children.length > 0)
+  return serverGroups.value
+    .map((group) => ({
+      ...group,
+      servers: group.servers.filter(
+        (server) => server.name.toLowerCase().includes(query) || server.host.includes(query)
+      ),
+      children: group.children
+        .map((childGroup) => ({
+          ...childGroup,
+          servers: childGroup.servers.filter(
+            (server) => server.name.toLowerCase().includes(query) || server.host.includes(query)
+          )
+        }))
+        .filter((childGroup) => childGroup.servers.length > 0)
+    }))
+    .filter((group) => group.servers.length > 0 || group.children.length > 0)
 })
 
 const filteredProxies = computed(() => {
@@ -1311,11 +1348,12 @@ const filteredProxies = computed(() => {
   }
 
   const query = searchQuery.value.toLowerCase()
-  return proxies.value.filter(proxy =>
-    proxy.name.toLowerCase().includes(query) ||
-    proxy.host.toLowerCase().includes(query) ||
-    proxy.type.toLowerCase().includes(query) ||
-    (proxy.description && proxy.description.toLowerCase().includes(query))
+  return proxies.value.filter(
+    (proxy) =>
+      proxy.name.toLowerCase().includes(query) ||
+      proxy.host.toLowerCase().includes(query) ||
+      proxy.type.toLowerCase().includes(query) ||
+      (proxy.description && proxy.description.toLowerCase().includes(query))
   )
 })
 
@@ -1618,42 +1656,6 @@ const performDeleteProxy = async (proxy: ProxyConfig) => {
   }
 }
 
-const toggleProxy = async (proxy: ProxyConfig) => {
-  try {
-    await window.api.proxyManager.toggleProxy(proxy.id)
-    await loadProxies()
-  } catch (error) {
-    console.error('Failed to toggle proxy:', error)
-  }
-}
-
-const testProxy = async (proxy: ProxyConfig) => {
-  try {
-    // 只传递必要的字段，避免克隆错误
-    const proxyData = {
-      id: proxy.id,
-      name: proxy.name,
-      type: proxy.type,
-      host: proxy.host,
-      port: proxy.port,
-      username: proxy.username,
-      password: proxy.password,
-      enabled: true,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }
-    const result = await window.api.proxyManager.testProxy(proxyData)
-    if (result) {
-      showOperationStatus('success', `代理 "${proxy.name}" 连接测试成功！`)
-    } else {
-      showOperationStatus('error', `代理 "${proxy.name}" 连接测试失败！`)
-    }
-  } catch (error) {
-    console.error('Failed to test proxy:', error)
-    showOperationStatus('error', `代理测试失败: ${error}`)
-  }
-}
-
 const handleSaveProxy = async () => {
   try {
     proxySaving.value = true
@@ -1661,7 +1663,7 @@ const handleSaveProxy = async () => {
     // 验证表单
     await proxyFormRef.value?.validate()
 
-    const proxyData = { 
+    const proxyData = {
       ...proxyForm.value,
       type: proxyForm.value.type as 'socks5' | 'socks4' | 'http'
     }
@@ -1701,21 +1703,31 @@ const handleCancelProxy = () => {
 // 状态相关方法
 const getStatusColor = (status: string) => {
   switch (status) {
-    case 'running': return '#52c41a'
-    case 'stopped': return '#d9d9d9'
-    case 'maintenance': return '#fa8c16'
-    case 'error': return '#ff4d4f'
-    default: return '#d9d9d9'
+    case 'running':
+      return '#52c41a'
+    case 'stopped':
+      return '#d9d9d9'
+    case 'maintenance':
+      return '#fa8c16'
+    case 'error':
+      return '#ff4d4f'
+    default:
+      return '#d9d9d9'
   }
 }
 
 const getStatusText = (status: string) => {
   switch (status) {
-    case 'running': return '运行中'
-    case 'stopped': return '已停止'
-    case 'maintenance': return '维护中'
-    case 'error': return '错误'
-    default: return '未知'
+    case 'running':
+      return '运行中'
+    case 'stopped':
+      return '已停止'
+    case 'maintenance':
+      return '维护中'
+    case 'error':
+      return '错误'
+    default:
+      return '未知'
   }
 }
 
@@ -1727,13 +1739,24 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+.footer-btn {
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(50%, 50%);
+  cursor: pointer;
+  &-active {
+    transform: translate(-50%, 0) rotate(180deg);
+  }
+}
 .asset-manager {
   height: 100vh;
   display: flex;
   flex-direction: column;
   background: transparent;
 }
-
 
 .asset-header {
   padding: 15px;
@@ -2258,12 +2281,6 @@ onMounted(() => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.proxy-item.disabled {
-  opacity: 0.6;
-  background: var(--n-color-disabled);
-  border-color: var(--n-border-color-disabled);
-}
-
 .proxy-info {
   flex: 1;
 }
@@ -2316,50 +2333,19 @@ onMounted(() => {
   font-size: 12px;
 }
 
-.proxy-status {
-  margin: 0 15px;
-}
-
-.status-indicator {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.status-indicator.enabled {
-  background: #f6ffed;
-  color: #52c41a;
-  border: 1px solid #b7eb8f;
-}
-
-.status-indicator:not(.enabled) {
-  background: #fff2e8;
-  color: #fa8c16;
-  border: 1px solid #ffd591;
-}
-
 .proxy-actions {
   display: flex;
   gap: 5px;
 }
 
 .proxy-actions button {
+  display: flex;
   padding: 6px 8px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
   transition: background-color 0.2s;
-}
-
-.test-btn {
-  background: #52c41a;
-  color: white;
-}
-
-.test-btn:hover {
-  background: #73d13d;
 }
 
 .edit-btn {
@@ -2369,15 +2355,6 @@ onMounted(() => {
 
 .edit-btn:hover {
   background: #40a9ff;
-}
-
-.toggle-btn {
-  background: #fa8c16;
-  color: white;
-}
-
-.toggle-btn:hover {
-  background: #ffa940;
 }
 
 .delete-btn {

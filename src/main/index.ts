@@ -27,6 +27,14 @@ function createWindow(): void {
     height: 900,
     show: false,
     autoHideMenuBar: true,
+    resizable: true,
+    frame: false, // 隐藏默认标题栏
+    titleBarStyle: 'hidden', // macOS 特有样式
+    titleBarOverlay: {
+      color: '#2f3241', // 自定义颜色
+      symbolColor: '#fff', // 按钮颜色
+      height: 40 // 标题栏高度
+    },
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -36,7 +44,7 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
-    
+
     // 设置更新服务的主窗口引用
     if (updateService) {
       updateService.setMainWindow(mainWindow)
@@ -56,6 +64,8 @@ function createWindow(): void {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 }
+
+// 设置窗口已改为模态框，不再需要单独的窗口
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -96,19 +106,19 @@ async function initializeApp(): Promise<void> {
     // 初始化数据库
     const databaseManager = DatabaseManager.getInstance()
     await databaseManager.initialize()
-    
+
     // 初始化服务器管理器
     serverManager = new ServerManager()
-    
+
     // 初始化代理服务
     proxyService = new ProxyService()
-    
+
     // 初始化更新服务
     updateService = new UpdateService()
-    
+
     // 设置IPC处理器
     setupIpcHandlers()
-    
+
     // 创建窗口
     createWindow()
   } catch (error) {
@@ -287,6 +297,27 @@ function setupIpcHandlers(): void {
     return updateService.isDownloadingUpdate()
   })
 
+  // 窗口管理相关
+  ipcMain.handle('toggle-always-on-top', () => {
+    const mainWindow = BrowserWindow.getAllWindows()[0]
+    if (mainWindow) {
+      const isAlwaysOnTop = mainWindow.isAlwaysOnTop()
+      mainWindow.setAlwaysOnTop(!isAlwaysOnTop)
+      return !isAlwaysOnTop
+    }
+    return false
+  })
+
+  ipcMain.handle('is-always-on-top', () => {
+    const mainWindow = BrowserWindow.getAllWindows()[0]
+    if (mainWindow) {
+      return mainWindow.isAlwaysOnTop()
+    }
+    return false
+  })
+
+  // 设置窗口已改为模态框，不再需要IPC处理器
+
   // 监听服务器状态变化事件
   serverManager.on('serverStatusChanged', (server) => {
     const mainWindow = BrowserWindow.getAllWindows()[0]
@@ -318,7 +349,7 @@ function setupIpcHandlers(): void {
 
   // SSH事件转发
   const sshManager = serverManager.getSSHManager()
-  
+
   sshManager.on('ssh-data', (connectionId: string, data: string) => {
     console.log(`Main process received ssh-data for connection: ${connectionId}`)
     const mainWindow = BrowserWindow.getAllWindows()[0]

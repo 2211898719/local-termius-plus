@@ -993,9 +993,10 @@
   -ms-user-select: none;
   touch-action: none;
   background-color: var(--dv-sash-color, transparent);
+  pointer-events: none;
 }
 .dv-split-view-container .dv-sash-container .dv-sash:not(.disabled):active, .dv-split-view-container .dv-sash-container .dv-sash:not(.disabled):hover {
-  background-color: var(--dv-active-sash-color, transparent);
+  background-color: transparent;
   transition-property: background-color;
   transition-timing-function: ease-in-out;
   transition-duration: var(--dv-active-sash-transition-duration, 0.1s);
